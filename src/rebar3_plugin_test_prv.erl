@@ -46,7 +46,7 @@ do(State) ->
            end,
     [begin
          Opts = rebar_app_info:opts(AppInfo),
-         io:format("AppInfo=~p,Opts=~p~n",[AppInfo,Opts]),
+         io:format("AppInfo=~p~n,Opts=~p~n",[AppInfo,Opts]),
          SourceDir = filename:join(rebar_app_info:dir(AppInfo), "src"),
          IncludeDir = filename:join(rebar_app_info:dir(AppInfo), "include"),
          FoundFiles = rebar_utils:find_files(SourceDir, ".*\\.csv\$"),
@@ -54,6 +54,7 @@ do(State) ->
          CompileFun = fun(Source, _Opts1) ->
              io:format("_Opts1=~p~n",[_Opts1]),
              ModName = filename:basename(Source, ".csv"),
+             io:format("ModName=~p~n",[ModName]),
              TargetName = ModName ++ ".erl",
              Hrl = ModName ++ ".hrl",
              %%    lists:foreach(fun rebar3_gpb_compiler:compile/1, Apps),
