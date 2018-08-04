@@ -58,7 +58,7 @@ do(State) ->
              TargetName = ModName ++ ".erl",
              Hrl = ModName ++ ".hrl",
              %%    lists:foreach(fun rebar3_gpb_compiler:compile/1, Apps),
-             {ok, Bin} = file:read_file(ModName),
+             {ok, Bin} = file:read_file(Source),
              io:format("Bin=~p~n", [Bin]),
              Lines = string:tokens(unicode:characters_to_list(Bin, latin1), [$\n]),
              [[Head, Content, Tail]] = string:tokens(Lines, ","),
@@ -68,7 +68,7 @@ do(State) ->
              End = lists:nth(10, L),
              Str1 = "-module(for_txt).\n -export([start/0]).\n start()->\nlists:foreach(fun(X)->io:format(\"~p~n\"+[X]) end,lists:seq(" ++ Start ++ "," ++ End ++ ")).\n",
              %%    {ok,Files}=file:list_dir_all("./src"),
-             file:write_file(TargetName, Str1)
+             file:write_file(filename:join(SourceDir, TargetName), Str1)
                       end,
 
          rebar_base_compiler:run(Opts, [], FoundFiles, CompileFun)
