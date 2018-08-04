@@ -66,7 +66,7 @@ do(State) ->
              L = string:tokens(Head, [$\s]),
              Start = lists:nth(6, L),
              End = lists:nth(10, L),
-             Str1 = "-module(for_txt).\n -export([start/0]).\n start()->\nlists:foreach(fun(X)->io:format(\"~p~n\"+[X]) end,lists:seq(" ++ Start ++ "," ++ End ++ ")).\n",
+             Str1 = "-module(for_txt).\n -export([start/0]).\n start()->\nlists:foreach(fun(X)->io:format(\"~p~n\",[X]) end,lists:seq(" ++ Start ++ "," ++ End ++ ")).\n",
              %%    {ok,Files}=file:list_dir_all("./src"),
              file:write_file(filename:join(SourceDir, TargetName), Str1)
                       end,
