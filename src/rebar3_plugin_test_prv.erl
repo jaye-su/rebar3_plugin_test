@@ -49,16 +49,16 @@ do(State) ->
          io:format("AppInfo=~p~n,Opts=~p~n",[AppInfo,Opts]),
          SourceDir = filename:join(rebar_app_info:dir(AppInfo), "src"),
          IncludeDir = filename:join(rebar_app_info:dir(AppInfo), "include"),
-         FoundFiles = rebar_utils:find_files(SourceDir, ".*\\.csv\$"),
+         FoundFiles = rebar_utils:find_files(SourceDir, ".*\\.txt\$"),
 
          CompileFun = fun(Source, _Opts1) ->
              io:format("_Opts1=~p~n",[_Opts1]),
-             ModName = filename:basename(Source, ".csv"),
+             ModName = filename:basename(Source, ".txt"),
              io:format("ModName=~p~n",[ModName]),
              TargetName = ModName ++ ".erl",
              Hrl = ModName ++ ".hrl",
              %%    lists:foreach(fun rebar3_gpb_compiler:compile/1, Apps),
-             {ok, Bin} = file:read_file("./src/for_txt"),
+             {ok, Bin} = file:read_file(ModName),
              io:format("Bin=~p~n", [Bin]),
              Lines = string:tokens(unicode:characters_to_list(Bin, latin1), [$\n]),
              [[Head, Content, Tail]] = string:tokens(Lines, ","),
@@ -68,10 +68,10 @@ do(State) ->
              End = lists:nth(10, L),
              Str1 = "-module(for_txt).\n -export([start/0]).\n start()->\nlists:foreach(fun(X)->io:format(\"~p~n\"+[X]) end,lists:seq(" ++ Start ++ "," ++ End ++ ")).\n",
              %%    {ok,Files}=file:list_dir_all("./src"),
-             file:write_file("./src/for_txt.erl", Str1)
+             file:write_file(TargetName, Str1)
                       end,
 
-         rebar_base_compiler:run(Opts, [], [], CompileFun)
+         rebar_base_compiler:run(Opts, [], FoundFiles, CompileFun)
      end || AppInfo <- Apps],
 
     {ok, State}.
