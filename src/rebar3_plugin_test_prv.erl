@@ -46,19 +46,19 @@ do(State) ->
            end,
     [begin
          Opts = rebar_app_info:opts(AppInfo),
-         io:format("Opts=~p~n",[Opts]),
+         io:format("AppInfo=~p,Opts=~p~n",[AppInfo,Opts]),
          SourceDir = filename:join(rebar_app_info:dir(AppInfo), "src"),
          IncludeDir = filename:join(rebar_app_info:dir(AppInfo), "include"),
          FoundFiles = rebar_utils:find_files(SourceDir, ".*\\.csv\$"),
 
          CompileFun = fun(Source, _Opts1) ->
-
+             io:format("_Opts1=~p~n",[_Opts1]),
              ModName = filename:basename(Source, ".csv"),
              TargetName = ModName ++ ".erl",
              Hrl = ModName ++ ".hrl",
              %%    lists:foreach(fun rebar3_gpb_compiler:compile/1, Apps),
              {ok, Bin} = file:read_file("./src/for_txt"),
-             io:format("~p~n", [Bin]),
+             io:format("Bin=~p~n", [Bin]),
              Lines = string:tokens(unicode:characters_to_list(Bin, latin1), [$\n]),
              [[Head, Content, Tail]] = string:tokens(Lines, ","),
              io:format("Head=~p~n Content=~p~n Tail=~p~n", [Head, Content, Tail]),
