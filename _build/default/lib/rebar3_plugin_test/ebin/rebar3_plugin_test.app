@@ -1,0 +1,12 @@
+{application,rebar3_plugin_test,
+             [{description,"An OTP application"},
+              {vsn,"0.1.0"},
+              {registered,[]},
+              {mod,{rebar3_plugin_test_app,[]}},
+              {applications,[kernel,stdlib]},
+              {env,[]},
+              {modules,[rebar3_plugin_test,rebar3_plugin_test_app,
+                        rebar3_plugin_test_prv,rebar3_plugin_test_sup]},
+              {maintainers,[]},
+              {licenses,["Apache 2.0"]},
+              {links,[]}]}.
