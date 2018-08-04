@@ -26,15 +26,14 @@
 
 init(State) ->
     Provider = providers:create([
-        {name, compile},            % The 'user friendly' name of the task
+        {name, ?PROVIDER},            % The 'user friendly' name of the task
         {module, ?MODULE},            % The module implementation of the task
-        {namespace, testp},
         {bare, true},                 % The task can be run by the user, always true
         {deps, ?DEPS},                % The list of dependencies
         {example, "rebar3 rebar3_plugin_test"}, % How to use the plugin
         {opts, []},                   % list of options understood by the plugin
-        {short_desc, "rebar3 testp compiler"},
-        {desc, "rebar3 testp compiler"}
+        {short_desc, "A rebar plugin"},
+        {desc, "A rebar plugin"}
     ]),
     {ok, rebar_state:add_provider(State, Provider)}.
 
