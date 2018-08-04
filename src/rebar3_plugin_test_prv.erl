@@ -46,11 +46,13 @@ do(State) ->
            end,
     [begin
          Opts = rebar_app_info:opts(AppInfo),
+         io:format("Opts=~p~n",[Opts]),
          SourceDir = filename:join(rebar_app_info:dir(AppInfo), "src"),
          IncludeDir = filename:join(rebar_app_info:dir(AppInfo), "include"),
          FoundFiles = rebar_utils:find_files(SourceDir, ".*\\.csv\$"),
 
          CompileFun = fun(Source, _Opts1) ->
+
              ModName = filename:basename(Source, ".csv"),
              TargetName = ModName ++ ".erl",
              Hrl = ModName ++ ".hrl",
