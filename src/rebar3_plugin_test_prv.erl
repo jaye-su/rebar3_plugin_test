@@ -47,17 +47,23 @@ do(State) ->
     [begin
          Opts = rebar_app_info:opts(AppInfo),
          io:format("AppInfo=~p~n,Opts=~p~n",[AppInfo,Opts]),
+         
          SourceDir = filename:join(rebar_app_info:dir(AppInfo), "src"),
+         
          IncludeDir = filename:join(rebar_app_info:dir(AppInfo), "include"),
+%%         找到固定后缀的文件
          FoundFiles = rebar_utils:find_files(SourceDir, ".*\\.txt\$"),
 
          CompileFun = fun(Source, _Opts1) ->
              io:format("_Opts1=~p~n",[_Opts1]),
+%%             获取文件名
              ModName = filename:basename(Source, ".txt"),
              io:format("ModName=~p~n",[ModName]),
+%%             拼接文件名
              TargetName = ModName ++ ".erl",
              Hrl = ModName ++ ".hrl",
              %%    lists:foreach(fun rebar3_gpb_compiler:compile/1, Apps),
+%%             读取待转换文件
              {ok, Bin} = file:read_file(Source),
              io:format("Bin=~p~n", [Bin]),
              Lines = string:tokens(unicode:characters_to_list(Bin, latin1), [$\n]),
@@ -68,6 +74,7 @@ do(State) ->
              End = lists:nth(10, L),
              Str1 = "-module(for_txt).\n -export([start/0]).\n start()->\nlists:foreach(fun(X)->io:format(\"~p~n\",[X]) end,lists:seq(" ++ Start ++ "," ++ End ++ ")).\n",
              %%    {ok,Files}=file:list_dir_all("./src"),
+%%             将转换后代码写进目标文件
              file:write_file(filename:join(SourceDir, TargetName), Str1)
                       end,
 
